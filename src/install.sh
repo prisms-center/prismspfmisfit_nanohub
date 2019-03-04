@@ -1,0 +1,2 @@
+cd phaseField/applications/singlePrecipitate_conservedAC/
+make release

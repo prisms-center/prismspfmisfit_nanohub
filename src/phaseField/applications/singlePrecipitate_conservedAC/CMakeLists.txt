@@ -61,19 +61,19 @@ ADD_EXECUTABLE(main main.cc )
 
 DEAL_II_SETUP_TARGET(main)
 
-set(cmd "cmake")
-set(arg "CMakeLists.txt")
-set(dir ${PROJECT_SOURCE_DIR}/../..)
-EXECUTE_PROCESS(COMMAND ${cmd} ${arg}
-		WORKING_DIRECTORY ${dir})
+#set(cmd "cmake")
+#set(arg "CMakeLists.txt")
+#set(dir ${PROJECT_SOURCE_DIR}/../..)
+#EXECUTE_PROCESS(COMMAND ${cmd} ${arg}
+#		WORKING_DIRECTORY ${dir})
 
-set(cmd "make")
+#set(cmd "make")
 
-EXECUTE_PROCESS(COMMAND ${cmd}
-		WORKING_DIRECTORY ${dir})
+#EXECUTE_PROCESS(COMMAND ${cmd}
+#		WORKING_DIRECTORY ${dir})
 
 if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
-	TARGET_LINK_LIBRARIES(main ${CMAKE_SOURCE_DIR}/../../libprisms_pf.a)
+	TARGET_LINK_LIBRARIES(main /apps/share64/debian7/phasefield/phasefield-2.1/lib/libprisms_pf.a)
 elseif(${CMAKE_BUILD_TYPE} STREQUAL "DebugRelease")
 	TARGET_LINK_LIBRARIES(main ${CMAKE_SOURCE_DIR}/../../libprisms_pf.a)
 else()
