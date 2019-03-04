@@ -1,0 +1,95 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+#Output files
+*vtk
+*vtu
+*vts
+*frt
+
+#Temporary files
+*~
+*#
+*.#
+*.btr
+freeEnergy.txt
+integratedFields.txt
+.*vtu*
+visitlog.py
+
+#CMAKE files
+*.cmake
+CMakeCache.txt
+CMakeFiles/
+Makefile
+main
+*#main*
+
+#Tex files
+*.aux
+*.glo
+*.idx
+*.log
+*.toc
+*.ist
+*.acn
+*.acr
+*.alg
+*.bbl
+*.blg
+*.dvi
+*.glg
+*.gls
+*.ilg
+*.ind
+*.lof
+*.lot
+*.maf
+*.mtc
+*.mtc1
+*.out
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.nav
+*.snm
+*.nlo
+
+test
+DoxygenWarningLog.txt
+*.project
+*.cproject
+*.DS_Store
+freeEnergy.txt
+output.txt
+
+restart*
+integratedFields.txt
+
+# Checkpoint/restart files
+restart.mesh
+restart.mesh.info
+restart.mesh.info.old
+restart.mesh.old
+restart.resume.z
+restart.time.info
+restart.time.info.old
