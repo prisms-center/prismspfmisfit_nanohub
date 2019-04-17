@@ -351,7 +351,7 @@ Rappture.Utils.progress(5, "Running the phase field simulation...")
 
 num_time_steps = parameter_extractor(path_to_app + "parameters_rappture.in", "Number of time steps")
 num_outputs = parameter_extractor(path_to_app + "parameters_rappture.in", "Number of outputs")
-print('num time steps:', num_time_steps)
+
 simulationCompleted = run_simulation("run_"+str(0), dir_path + '/' + path_to_app, float(num_time_steps), int(num_outputs))
 
 if (simulationCompleted):
