@@ -335,14 +335,14 @@ interfacial_energy_string_11 = str(interfacial_energy_11)+', double'
 interfacial_energy_string_22 = str(interfacial_energy_22)+', double'
 
 if interfacial_energy_11 < 15:
-    subdivisions_X_string = '2, double'
+    subdivisions_X_string = '2'
 else:
-    subdivisions_X_string = '1, double'
+    subdivisions_X_string = '1'
 
 if interfacial_energy_22 < 15:
-    subdivisions_Y_string = '2, double'
+    subdivisions_Y_string = '2'
 else:
-    subdivisions_Y_string = '1, double'
+    subdivisions_Y_string = '1'
 
 create_prismspf_input_file(path_to_app, ['Subdivisions X', 'Subdivisions Y', 'Model constant sfts_const1', 'Model constant CIJ_Mg', 'Model constant CIJ_Beta', 'Model constant interfacial_energy_11', 'Model constant interfacial_energy_22'], (subdivisions_X_string, subdivisions_Y_string, misfit_string, ec_matrix_string, ec_beta_string,interfacial_energy_string_11, interfacial_energy_string_22))
 

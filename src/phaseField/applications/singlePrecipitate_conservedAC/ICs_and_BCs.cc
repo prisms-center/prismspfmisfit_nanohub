@@ -10,7 +10,6 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
     // Enter the function describing conditions for the fields at point "p".
     // Use "if" statements to set the initial condition for each variable
     // according to its variable index
-
     // Initial condition parameters
     double x_denom = (5.0)*(5.0);
     double y_denom = (5.0)*(5.0);
@@ -27,7 +26,6 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
     ellipsoid_denoms.push_back(x_denom);
     ellipsoid_denoms.push_back(y_denom);
     ellipsoid_denoms.push_back(z_denom);
-
     for (unsigned int i=0; i<dim; i++){
         r += (userInputs.domain_size[i]/2.0-p(i))*(userInputs.domain_size[i]/2.0-p(i))/ellipsoid_denoms[i];
     }
@@ -39,12 +37,9 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
     else if (index==1){
         scalar_IC = 0.5*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff)));
     }
-    else if (index==2){
-        scalar_IC = 0.5*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff)));
-    }
     else {
         for (unsigned int d=0; d<dim; d++){
-            vector_IC(d) = 0.0;
+           vector_IC(d) = 0.0;
         }
     }
 }

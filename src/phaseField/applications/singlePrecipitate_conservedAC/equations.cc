@@ -26,7 +26,7 @@ void variableAttributeLoader::loadVariableAttributes(){
 	set_variable_equation_type		(2,TIME_INDEPENDENT);
 
     set_dependencies_value_term_RHS(2, "");
-    set_dependencies_gradient_term_RHS(2, "c, n1, grad(u)");
+    set_dependencies_gradient_term_RHS(2, "c, n1, grad(u), grad(n1)");
     set_dependencies_value_term_LHS(2, "");
     set_dependencies_gradient_term_LHS(2, "n1, grad(change(u))");
 
@@ -83,6 +83,7 @@ void customPDE<dim,degree>::explicitEquationRHS(variableContainer<dim,degree,dea
 // --- Getting the values and derivatives of the model variables ---
 
 // The concentration and its derivatives (names here should match those in the macros above)
+
 scalarvalueType c = variable_list.get_scalar_value(0);
 
 // The first order parameter and its derivatives (names here should match those in the macros above)

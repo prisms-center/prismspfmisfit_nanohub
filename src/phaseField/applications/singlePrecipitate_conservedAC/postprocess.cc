@@ -24,11 +24,13 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 
 // =================================================================================
 
+#define c_alpha ((B2*c+0.5*(B1-A1)*h1V)/(A2*h1V+B2*(1.0-h1V)))
+#define c_beta ((A2*c+0.5*(A1-B1)*(1.0-h1V))/(A2*h1V+B2*(1.0-h1V)))
+
 template <int dim,int degree>
 void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 	variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
 	const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
-
 		scalarvalueType total_energy_density = constV(0.0);
 
 		/// The concentration and its derivatives (names here should match those in the macros above)
@@ -40,7 +42,8 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 		scalargradType n1x = variable_list.get_scalar_gradient(1);
 
 		// The derivative of the displacement vector (names here should match those in the macros above)
-		vectorgradType ux = variable_list.get_vector_gradient(2);
+	
+                vectorgradType ux = variable_list.get_vector_gradient(2);
 
 		scalarvalueType f_chem = (constV(1.0)-(h1V))*faV + (h1V)*fbV + constV(W)*fbarrierV;
 

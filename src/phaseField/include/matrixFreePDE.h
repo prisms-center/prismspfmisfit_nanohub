@@ -92,7 +92,7 @@ class MatrixFreePDE:public Subscriptor
   /**
    * This method implements the time stepping algorithm and invokes the solveIncrement() method.
    */
-  virtual void solve ();
+  void solve ();
   /**
    * This method essentially converts the MatrixFreePDE object into a matrix object which can be
    * used with matrix free iterative solvers. Provides the A*x functionality for solving the system of
@@ -321,8 +321,8 @@ class MatrixFreePDE:public Subscriptor
   void getLocalNucleiList(std::vector<nucleus<dim> > & newnuclei) const;
   void safetyCheckNewNuclei(std::vector<nucleus<dim> > newnuclei, std::vector<unsigned int> & conflict_ids);
   void refineMeshNearNuclei(std::vector<nucleus<dim> > newnuclei);
-  double weightedDistanceFromNucleusCenter(const dealii::Point<dim,double> center, const std::vector<double> semiaxes, const dealii::Tensor<2,dim,double> rotation_matrix, const dealii::Point<dim,double> q_point_loc, const unsigned int var_index) const;
-  dealii::VectorizedArray<double> weightedDistanceFromNucleusCenter(const dealii::Point<dim,double> center, const std::vector<double> semiaxes, const dealii::Tensor<2,dim,double> rotation_matrix, const dealii::Point<dim,dealii::VectorizedArray<double> > q_point_loc, const unsigned int var_index) const;
+  double weightedDistanceFromNucleusCenter(const dealii::Point<dim,double> center, const std::vector<double> semiaxes, const dealii::Point<dim,double> q_point_loc, const unsigned int var_index) const;
+  dealii::VectorizedArray<double> weightedDistanceFromNucleusCenter(const dealii::Point<dim,double> center, const std::vector<double> semiaxes, const dealii::Point<dim,dealii::VectorizedArray<double> > q_point_loc, const unsigned int var_index) const;
 
 
   // Method to obtain the nucleation probability for an element, nontrival case must be implemented in the subsclass
