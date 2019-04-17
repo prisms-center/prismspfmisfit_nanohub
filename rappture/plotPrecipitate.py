@@ -250,7 +250,7 @@ AnnotationAtts.axesArray.axes.grid = 0
 SetAnnotationAttributes(AnnotationAtts)
 
 View2DAtts = View2DAttributes()
-View2DAtts.windowCoords = (0, 200, 0, 200)
+View2DAtts.windowCoords = (0, 100, 0, 100)
 View2DAtts.viewportCoords = (0, 1, 0, 1)
 View2DAtts.fullFrameActivationMode = View2DAtts.Auto  # On, Off, Auto
 View2DAtts.fullFrameAutoThreshold = 100

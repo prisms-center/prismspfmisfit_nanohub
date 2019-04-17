@@ -2,7 +2,9 @@ all:
 
 
 install:
-	cmake phaseField/applications/singlePrecipitate_conservedAC/CMakeLists.txt
+	use phasefield-2.1.1	
+        use visit-2.12.2
+	cmake phaseField/applications/singlePrecipitate_conservedAC/CMakeLists.txt -DDEAL_II_DIR=/apps/share64/debian7/dealii/dealii-9.0.1
 	bash install.sh
 
 clean:

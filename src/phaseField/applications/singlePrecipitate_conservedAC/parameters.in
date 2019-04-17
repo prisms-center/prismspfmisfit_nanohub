@@ -58,8 +58,8 @@ set Time step = 4.0e-4
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-#set Number of time steps = 5000000
-set Simulation end time = 400
+set Number of time steps = 1000000
+#set Simulation end time = 400
 
 # =================================================================================
 # Set the linear solver parameters
