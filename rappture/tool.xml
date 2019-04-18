@@ -537,8 +537,8 @@ YII=</default>
                     <description>The energy of the precipitate/matrix interface along the x axis.</description>
                 </about>
                 <default>15</default>
-                <min>10</min>
-                <max>20</max>
+                <min>4</min>
+                <max>35</max>
             </number>
             <number id="interfacial_energy_22">
                 <about>
@@ -546,8 +546,8 @@ YII=</default>
                     <description>The energy of the precipitate/matrix interface along the y axis.</description>
                 </about>
                 <default>15</default>
-                <min>10</min>
-                <max>20</max>
+                <min>4</min>
+                <max>35</max>
             </number>
         </group>
         <group id="misfit_strains">

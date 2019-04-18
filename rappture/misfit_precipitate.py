@@ -67,7 +67,7 @@ def run_simulation(run_name, dir_path, num_time_steps, num_outputs):
     #subprocess.call(["mpirun", "-n", "6", "main", "-i","parameters_rappture.in"], stdout=f)
     #p = subprocess.Popen(["mpirun", "-n", "6", "main", "-i","parameters_rappture.in"], stdout=f)
 
-    exitStatus,stdOutput,stdError = RapptureExec(["mpirun", "-n", "6", dir_path + "main", "-i", dir_path + "parameters_rappture.in"])
+    exitStatus,stdOutput,stdError = RapptureExec(["mpirun", "-n", "1", dir_path + "../bin", "-i", dir_path + "parameters_rappture.in"])
 
     #fts = open("run_info.txt",'w')
     #fts.write(str(int(num_time_steps))+'\n'+str(num_outputs))
@@ -84,7 +84,7 @@ def run_simulation(run_name, dir_path, num_time_steps, num_outputs):
         if os.path.exists("integratedFields.txt") is True:
 	    shutil.move("integratedFields.txt", run_name)
 
-        shutil.move(run_name, rappture_path)
+        # shutil.move(run_name, rappture_path)
     else:
         simulationCompleted = False
 
@@ -344,15 +344,15 @@ if interfacial_energy_22 < 15:
 else:
     subdivisions_Y_string = '1'
 
-create_prismspf_input_file(path_to_app, ['Subdivisions X', 'Subdivisions Y', 'Model constant sfts_const1', 'Model constant CIJ_Mg', 'Model constant CIJ_Beta', 'Model constant interfacial_energy_11', 'Model constant interfacial_energy_22'], (subdivisions_X_string, subdivisions_Y_string, misfit_string, ec_matrix_string, ec_beta_string,interfacial_energy_string_11, interfacial_energy_string_22))
+create_prismspf_input_file('', ['Subdivisions X', 'Subdivisions Y', 'Model constant sfts_const1', 'Model constant CIJ_Mg', 'Model constant CIJ_Beta', 'Model constant interfacial_energy_11', 'Model constant interfacial_energy_22'], (subdivisions_X_string, subdivisions_Y_string, misfit_string, ec_matrix_string, ec_beta_string,interfacial_energy_string_11, interfacial_energy_string_22))
 
 
 Rappture.Utils.progress(5, "Running the phase field simulation...")
 
-num_time_steps = parameter_extractor(path_to_app + "parameters_rappture.in", "Number of time steps")
-num_outputs = parameter_extractor(path_to_app + "parameters_rappture.in", "Number of outputs")
+num_time_steps = parameter_extractor("parameters_rappture.in", "Number of time steps")
+num_outputs = parameter_extractor("parameters_rappture.in", "Number of outputs")
 
-simulationCompleted = run_simulation("run_"+str(0), dir_path + '/' + path_to_app, float(num_time_steps), int(num_outputs))
+simulationCompleted = run_simulation("run_"+str(0), dir_path + '/', float(num_time_steps), int(num_outputs))
 
 if (simulationCompleted):
 

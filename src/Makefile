@@ -12,10 +12,10 @@ install:
 
 clean:
 	rm -f $(APPDIR)/CMakeCache.txt
- 	rm -f $(APPDIR)/main
- 	rm -rf $(APPDIR)/CMakeFiles
- 	rm -f $(APPDIR)/Makefile
- 	rm -f $(APPDIR)/cmake_install.cmake
+	rm -f $(APPDIR)/main
+	rm -rf $(APPDIR)/CMakeFiles
+	rm -f $(APPDIR)/Makefile
+	rm -f $(APPDIR)/cmake_install.cmake
 
 distclean: clean
 	rm -f ../bin/main
