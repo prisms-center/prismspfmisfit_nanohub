@@ -1,3 +1,0 @@
-#!/bin/sh
-
-/usr/bin/invoke_app "$@" -C rappture -t prismspfmisfit
