@@ -16,15 +16,15 @@ import numpy as np
 from scipy.spatial import ConvexHull
 
 if __name__ == "__main__":
-    
+
     f = open('debug.txt','w')
-    p = subprocess.Popen(["mpirun", "-n", "6", "main", "-i","parameters_rappture.in"], stdout=f)
+    p = subprocess.Popen(["mpirun", "-n", "1", "main", "-i","parameters_rappture.in"], stdout=f)
 
     fts = open("run_info.txt")
     num_time_steps = int(fts.readline().rstrip())
     num_outputs = int(fts.readline())
     fts.close()
-    
+
     # Print out progress during the simulation
     solution_file_names = []
     f.write(str(num_time_steps))
@@ -46,7 +46,7 @@ if __name__ == "__main__":
         f = open('debug.txt', 'a')
         f.write(solution_file_names[output_index] + '\n')
         f.close()
-        
+
         if os.path.exists(solution_file_names[output_index]):
             progress = int((85.0 - 5.0) / num_outputs * (output_index + 1) + 5)
             Rappture.Utils.progress(progress, "Running the phase field simulation...")

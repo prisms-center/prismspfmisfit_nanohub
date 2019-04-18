@@ -1,3 +1,5 @@
 #!/bin/sh
 
-/usr/bin/invoke_app "$@" -C rappture -t prismspfmisfit
+usr/bin/invoke_app "$@" -C rappture -t prismspfmisfit \
+ 	                    -u phasefield-2.1.1 \
+ 	                    -u visit-2.12.2
