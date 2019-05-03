@@ -13,7 +13,8 @@ folder_name += set_index.strip()
 output_num = output_num_temp
 
 #filename = directory+"/" + path_to_app + folder_name+"/solution-"+output_num+".vtu"
-filename = directory+ '/'+ folder_name+"/solution-"+output_num+".vtu"
+#filename = directory+ '/'+ folder_name+"/solution-"+output_num+".vtu"
+filename = folder_name+"/solution-"+output_num+".vtu"
 
 OpenDatabase(filename)
 AddPlot("Pseudocolor", "n1", 1, 1)

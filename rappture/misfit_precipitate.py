@@ -18,14 +18,14 @@ from scipy.spatial import ConvexHull
 # ----------------------------------------------------------------------------------------
 # Function that generates the PRISMS-PF input file snippet
 # ----------------------------------------------------------------------------------------
-def create_prismspf_input_file(path_to_app, entry_name, entry_value):
+def create_prismspf_input_file(path_to_app, path_to_working_dir, entry_name, entry_value):
 
-    if os.path.exists(path_to_app + "parameters_rappture.in") is True:
-        os.remove(path_to_app + "parameters_rappture.in")
+    if os.path.exists(str(path_to_working_dir) + "/parameters_rappture.in") is True:
+        os.remove(str(path_to_working_dir) + "/parameters_rappture.in")
+    print(str(path_to_working_dir) + "/parameters_rappture.in")
+    shutil.copyfile(path_to_app + "parameters.in", str(path_to_working_dir) + "/parameters_rappture.in")
 
-    shutil.copyfile(path_to_app + "parameters.in", path_to_app + "parameters_rappture.in")
-
-    f = open(path_to_app + "parameters_rappture.in", 'a+')
+    f = open(str(os.getcwd()) + "parameters_rappture.in", 'a+')
 
     '''
     entry_counter = 0
@@ -44,30 +44,30 @@ def create_prismspf_input_file(path_to_app, entry_name, entry_value):
 # ----------------------------------------------------------------------------------------
 # Function that compiles the PRISMS-PF code and runs the executable.
 # ----------------------------------------------------------------------------------------
-def run_simulation(run_name, dir_path, num_time_steps, num_outputs):
+def run_simulation(run_name, dir_path, path_to_working_dir, num_time_steps, num_outputs):
 
     # Delete any pre-existing executables or results
-    if os.path.exists(run_name) is True:
-        shutil.rmtree(run_name)
+    if os.path.exists(str(path_to_working_dir) + '/' + run_name) is True:
+        shutil.rmtree(str(path_to_working_dir) + '/' + run_name)
 
     # Open file where output is redirected to
-    if os.path.exists("output.txt") is True:
-        os.remove("output.txt")
-    f = open("output.txt", 'w+')
+    if os.path.exists(str(path_to_working_dir) + "/output.txt") is True:
+        os.remove(str(path_to_working_dir) + "/output.txt")
+    f = open(str(path_to_working_dir) + "/output.txt", 'w+')
 
-    for vtu_file in glob.glob("*.vtu"):
+    for vtu_file in glob.glob(str(path_to_working_dir) + "/*.vtu"):
         os.remove(vtu_file)
+
+    shutil.copyfile(dir_path + "../bin", str(path_to_working_dir) + '/bin')
 
     # Run the simulation
     rappture_path = os.path.dirname(os.path.realpath(__file__))
-    os.chdir(dir_path)
+    #os.chdir(dir_path)
 
+    os.chdir(path_to_working_dir)
 
-
-    #subprocess.call(["mpirun", "-n", "6", "main", "-i","parameters_rappture.in"], stdout=f)
-    #p = subprocess.Popen(["mpirun", "-n", "6", "main", "-i","parameters_rappture.in"], stdout=f)
-
-    exitStatus,stdOutput,stdError = RapptureExec(["mpirun", "-n", "1", dir_path + "../bin", "-i", dir_path + "parameters_rappture.in"])
+    exitStatus,stdOutput,stdError = RapptureExec(["mpirun", "-n", "1", dir_path + "../bin", "-i", str(path_to_working_dir) + "/parameters_rappture.in"])
+    #exitStatus,stdOutput,stdError = RapptureExec(["mpirun", "-n", "1", "bin", "-i", "parameters_rappture.in"])
 
     #fts = open("run_info.txt",'w')
     #fts.write(str(int(num_time_steps))+'\n'+str(num_outputs))
@@ -316,6 +316,7 @@ precip_poisson = float(io.get('input.group(ec_precip).number(precip_poisson).cur
 #########################################################
 
 # Initialize
+path_to_working_dir = os.getcwd()
 dir_path = os.path.dirname(os.path.realpath(__file__))
 os.chdir(dir_path)
 
@@ -344,15 +345,15 @@ if interfacial_energy_22 < 15:
 else:
     subdivisions_Y_string = '1'
 
-create_prismspf_input_file('', ['Subdivisions X', 'Subdivisions Y', 'Model constant sfts_const1', 'Model constant CIJ_Mg', 'Model constant CIJ_Beta', 'Model constant interfacial_energy_11', 'Model constant interfacial_energy_22'], (subdivisions_X_string, subdivisions_Y_string, misfit_string, ec_matrix_string, ec_beta_string,interfacial_energy_string_11, interfacial_energy_string_22))
+create_prismspf_input_file('', path_to_working_dir, ['Subdivisions X', 'Subdivisions Y', 'Model constant sfts_const1', 'Model constant CIJ_Mg', 'Model constant CIJ_Beta', 'Model constant interfacial_energy_11', 'Model constant interfacial_energy_22'], (subdivisions_X_string, subdivisions_Y_string, misfit_string, ec_matrix_string, ec_beta_string,interfacial_energy_string_11, interfacial_energy_string_22))
 
 
 Rappture.Utils.progress(5, "Running the phase field simulation...")
 
-num_time_steps = parameter_extractor("parameters_rappture.in", "Number of time steps")
-num_outputs = parameter_extractor("parameters_rappture.in", "Number of outputs")
+num_time_steps = parameter_extractor(str(path_to_working_dir)+"/parameters_rappture.in", "Number of time steps")
+num_outputs = parameter_extractor(str(path_to_working_dir)+"/parameters_rappture.in", "Number of outputs")
 
-simulationCompleted = run_simulation("run_"+str(0), dir_path + '/', float(num_time_steps), int(num_outputs))
+simulationCompleted = run_simulation("run_"+str(0), dir_path + '/', path_to_working_dir, float(num_time_steps), int(num_outputs))
 
 if (simulationCompleted):
 
@@ -360,15 +361,16 @@ if (simulationCompleted):
 
     # Extract the points along the interface of the precipitate
 
-    scratch_file = open("scratch.txt", 'w')
+    scratch_file = open(str(path_to_working_dir) + "/scratch.txt", 'w')
     scratch_file.write(str(0))
     scratch_file.write('\n')
     scratch_file.write(str(num_time_steps))
     scratch_file.close()
 
     #Rappture.Utils.progress(91, "Plotting the contours...")
-    subprocess.call(["visit", "-cli", "-nowin", "-s", "saveContour.py"])
-    #subprocess.call(["visit", "-cli", "-s", "saveContour.py"])
+    os.chdir(path_to_working_dir)
+    subprocess.call(["visit", "-cli", "-nowin", "-s", str(dir_path) + "/saveContour.py"])
+    #subprocess.call(["visit", "-cli", "-s","saveContour.py"])
 
     Rappture.Utils.progress(92, "Determining the precipitate dimensions...")
 
@@ -394,7 +396,7 @@ if (simulationCompleted):
     subprocess.call(["rm", "precipitate_plot_visit0000.png"])
 
     Rappture.Utils.progress(93, "Plotting the precipitates...")
-    subprocess.call(["visit", "-cli", "-nowin", "-s", "plotPrecipitate.py"])
+    subprocess.call(["visit", "-cli", "-nowin", "-s", str(dir_path) + "/plotPrecipitate.py"])
     image = 'precipitate_plot_visit0000.png'
 
     encoded_string = ""
