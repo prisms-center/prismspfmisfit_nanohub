@@ -25,7 +25,7 @@ def create_prismspf_input_file(path_to_app, path_to_working_dir, entry_name, ent
     print(str(path_to_working_dir) + "/parameters_rappture.in")
     shutil.copyfile(path_to_app + "parameters.in", str(path_to_working_dir) + "/parameters_rappture.in")
 
-    f = open(str(os.getcwd()) + "/parameters_rappture.in", 'a+')
+    f = open(str(path_to_working_dir) + "/parameters_rappture.in", 'a+')
 
     '''
     entry_counter = 0
@@ -58,7 +58,7 @@ def run_simulation(run_name, dir_path, path_to_working_dir, num_time_steps, num_
     for vtu_file in glob.glob(str(path_to_working_dir) + "/*.vtu"):
         os.remove(vtu_file)
 
-    shutil.copyfile(dir_path + "../bin", str(path_to_working_dir) + '/bin')
+    #shutil.copyfile(dir_path + "../bin", str(path_to_working_dir) + '/bin')
 
     # Run the simulation
     rappture_path = os.path.dirname(os.path.realpath(__file__))
