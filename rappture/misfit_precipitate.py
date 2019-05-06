@@ -25,7 +25,7 @@ def create_prismspf_input_file(path_to_app, path_to_working_dir, entry_name, ent
     print(str(path_to_working_dir) + "/parameters_rappture.in")
     shutil.copyfile(path_to_app + "parameters.in", str(path_to_working_dir) + "/parameters_rappture.in")
 
-    f = open(str(os.getcwd()) + "parameters_rappture.in", 'a+')
+    f = open(str(os.getcwd()) + "/parameters_rappture.in", 'a+')
 
     '''
     entry_counter = 0
