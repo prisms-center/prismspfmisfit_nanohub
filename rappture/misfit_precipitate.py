@@ -45,7 +45,7 @@ def create_prismspf_input_file(path_to_app, path_to_working_dir, entry_name, ent
 # Function that compiles the PRISMS-PF code and runs the executable.
 # ----------------------------------------------------------------------------------------
 def run_simulation(run_name, dir_path, path_to_working_dir, num_time_steps, num_outputs):
-
+    print("Deleting any pre-existing results...")
     # Delete any pre-existing executables or results
     if os.path.exists(str(path_to_working_dir) + '/' + run_name) is True:
         shutil.rmtree(str(path_to_working_dir) + '/' + run_name)
@@ -59,14 +59,17 @@ def run_simulation(run_name, dir_path, path_to_working_dir, num_time_steps, num_
         os.remove(vtu_file)
 
     #shutil.copyfile(dir_path + "../bin", str(path_to_working_dir) + '/bin')
-
+    print("Completed")
     # Run the simulation
     rappture_path = os.path.dirname(os.path.realpath(__file__))
     #os.chdir(dir_path)
 
     os.chdir(path_to_working_dir)
-
+    print("Running the PRISMS-PF executable...")
     exitStatus,stdOutput,stdError = RapptureExec(["mpirun", "-n", "1", dir_path + "../bin", "-i", str(path_to_working_dir) + "/parameters_rappture.in"])
+
+    print("Completed with exit status:", exitStatus)
+
     #exitStatus,stdOutput,stdError = RapptureExec(["mpirun", "-n", "1", "bin", "-i", "parameters_rappture.in"])
 
     #fts = open("run_info.txt",'w')
@@ -281,7 +284,7 @@ io = Rappture.library(sys.argv[1])
 #########################################################
 # Get input values from Rappture
 #########################################################
-
+print("Getting inputs from the GUI...")
 # get input value for input.group(misfit_strains).number(misfit11)
 interfacial_energy_11 = float(io.get('input.group(interfacial_energy).number(interfacial_energy_11).current'))
 interfacial_energy_22 = float(io.get('input.group(interfacial_energy).number(interfacial_energy_22).current'))
@@ -309,7 +312,7 @@ precip_modulus = float(io.get('input.group(ec_precip).number(precip_modulus).cur
 
 # get input value for input.group(elastic_constants).group(ec_precip).number(precip_poisson)
 precip_poisson = float(io.get('input.group(ec_precip).number(precip_poisson).current'))
-
+print("Completed")
 
 #########################################################
 #  Add your code here for the main body of your program
@@ -324,6 +327,7 @@ os.chdir(dir_path)
 Rappture.Utils.progress(0, "Starting...")
 
 #exitStatus,stdOutput,stdError = Rappture.tools.executeCommand('echo here')
+print("Creating the input file...")
 
 misfit_string = '(('+str(misfit11)+','+str(misfit12)+',0),('+str(misfit21)+','+str(misfit22)+',0),(0,0,0)), tensor'
 
@@ -346,7 +350,7 @@ else:
     subdivisions_Y_string = '1'
 
 create_prismspf_input_file('', path_to_working_dir, ['Subdivisions X', 'Subdivisions Y', 'Model constant sfts_const1', 'Model constant CIJ_Mg', 'Model constant CIJ_Beta', 'Model constant interfacial_energy_11', 'Model constant interfacial_energy_22'], (subdivisions_X_string, subdivisions_Y_string, misfit_string, ec_matrix_string, ec_beta_string,interfacial_energy_string_11, interfacial_energy_string_22))
-
+print("Completed")
 
 Rappture.Utils.progress(5, "Running the phase field simulation...")
 
@@ -355,12 +359,14 @@ num_outputs = parameter_extractor(str(path_to_working_dir)+"/parameters_rappture
 
 simulationCompleted = run_simulation("run_"+str(0), dir_path + '/', path_to_working_dir, float(num_time_steps), int(num_outputs))
 
+print("Simulation completed?", simulationCompleted)
+
 if (simulationCompleted):
 
     Rappture.Utils.progress(90, "Simulation complete, beginning analysis...")
 
     # Extract the points along the interface of the precipitate
-
+    print("Plotting the precipitate contour...")
     scratch_file = open(str(path_to_working_dir) + "/scratch.txt", 'w')
     scratch_file.write(str(0))
     scratch_file.write('\n')
@@ -371,9 +377,9 @@ if (simulationCompleted):
     os.chdir(path_to_working_dir)
     subprocess.call(["visit", "-cli", "-nowin", "-s", str(dir_path) + "/saveContour.py"])
     #subprocess.call(["visit", "-cli", "-s","saveContour.py"])
-
+    print("Completed")
     Rappture.Utils.progress(92, "Determining the precipitate dimensions...")
-
+    print("Calculating the precipitate dimensions...")
     f = open('contour_ellipse.xyz','r')
     point_list = []
     for line in f:
@@ -390,13 +396,18 @@ if (simulationCompleted):
     f = open("precipitate_lengths.txt",'w')
     f.write(str(round(length_1,4))+'\n'+str(round(length_2,4)))
     f.close()
-
+    print("Completed")
     #result = run_analysis("run_"+str(0), 0, dir_path, num_time_steps)
 
     subprocess.call(["rm", "precipitate_plot_visit0000.png"])
-
+ 
     Rappture.Utils.progress(93, "Plotting the precipitates...")
+    print("Plotting the precipitates...")
     subprocess.call(["visit", "-cli", "-nowin", "-s", str(dir_path) + "/plotPrecipitate.py"])
+    
+    print("Completed")
+
+    print("Encode precipiate plot and calculate aspect ratio...")
     image = 'precipitate_plot_visit0000.png'
 
     encoded_string = ""
@@ -405,7 +416,7 @@ if (simulationCompleted):
         imdata = encoded_string
 
     aspect_ratio = max(length_1/length_2,length_2/length_1)
-
+    print("Completed")
     Rappture.Utils.progress(100, "Done")
 
 #########################################################
@@ -413,6 +424,7 @@ if (simulationCompleted):
 #########################################################
 
 if (simulationCompleted):
+    print("Send results back to the GUI...")
     # save output value for output.image(result_image)
     # data should be base64-encoded image data
     io.put('output.image(result_image).current', imdata)
@@ -421,6 +433,7 @@ if (simulationCompleted):
     io.put('output.number(aspect_ratio).current',aspect_ratio)
 
     Rappture.result(io)
+    print("Completed")
 else:
     print('Simulation aborted by user!')
 sys.exit()
