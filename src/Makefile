@@ -8,6 +8,7 @@ all:
 
 install:
 	. /etc/environ.sh; use -e -r phasefield-2.1.1; use -e -r cmake-3.6.3; make all
+	mkdir -p ../bin
 	install --mode 0755 -D $(APPDIR)/main ../bin
 
 clean:

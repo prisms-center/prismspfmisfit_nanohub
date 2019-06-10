@@ -66,7 +66,7 @@ def run_simulation(run_name, dir_path, path_to_working_dir, num_time_steps, num_
 
     os.chdir(path_to_working_dir)
     print("Running the PRISMS-PF executable...")
-    exitStatus,stdOutput,stdError = RapptureExec(["mpirun", "-n", "1", dir_path + "../bin", "-i", str(path_to_working_dir) + "/parameters_rappture.in"])
+    exitStatus,stdOutput,stdError = RapptureExec(["mpirun", "-n", "1", dir_path + "../bin/main", "-i", str(path_to_working_dir) + "/parameters_rappture.in"])
 
     print("Completed with exit status:", exitStatus)
 
