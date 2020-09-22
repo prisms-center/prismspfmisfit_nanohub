@@ -1,18 +1,6 @@
 <?xml version="1.0"?>
 <run>
     <tool>
-    <id>prismspfmisfit</id>
- 	<name>prismspfmisfit</name>
- 	<version>
- 	  <identifier></identifier>
- 	  <application>
- 	    <revision>9</revision>
- 	    <modified>2019-04-18 11:23:24 -0400 (Thu, 18 Apr 2019)</modified>
- 	    <installed>2019-04-18 11:24:44 EDT</installed>
- 	    <directory id="top">/apps/prismspfmisfit/r9</directory>
- 	    <directory id="tool">/apps/prismspfmisfit/r9/rappture</directory>
- 	  </application>
- 	</version>
         <title>Equilibrium shape of a misfitted precipitate</title>
         <about>This app calculates the equilbrium shape of a precipitate (particle) that has a misfit strain relative to the matrix it sits in. The calculation is performed using the phase field method using the PRISMS-PF framework (https://prisms-center.github.io/phaseField/). The app automatically measures the dimensions of the precipitate as well as the volume fraction. Users can see how these values changes as they modify the components of the misfit strain, the elastic constants for the matrix and precipitate, and the interfacial energy.</about>
         <command>python @tool/misfit_precipitate.py @driver</command>
@@ -630,6 +618,21 @@ YII=</default>
                 <min>0.25</min>
                 <max>0.35</max>
             </number>
+            <group id="simulation_optimization">
+                <about>
+                    <label>Simulation Optimization</label>
+                    <description>Offers users optimization options to help with simulation speed. Turning Hi-Fi off results in a faster output, but lower resolution.</description>
+                </about>
+                <note id="toggle_description">
+                    <contents>file://updatetextbox.html</contents>
+                </note>
+                <boolean id="hi_fi">
+                    <about>
+                        <label>Hi-Fi</label>
+                    </about>
+                    <default>yes</default>
+                </boolean>
+            </group>
         </group>
     </input>
     <output>

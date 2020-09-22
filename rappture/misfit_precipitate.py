@@ -66,11 +66,11 @@ def run_simulation(run_name, dir_path, path_to_working_dir, num_time_steps, num_
 
     os.chdir(path_to_working_dir)
     print("Running the PRISMS-PF executable...")
-    exitStatus,stdOutput,stdError = RapptureExec(["mpirun", "-n", "1", dir_path + "../bin/main", "-i", str(path_to_working_dir) + "/parameters_rappture.in"])
+    exitStatus,stdOutput,stdError = RapptureExec(["submit", "--local", "--metrics", dir_path + "../bin/main", "-i", str(path_to_working_dir) + "/parameters_rappture.in"], streamOutput=True)
 
     print("Completed with exit status:", exitStatus)
 
-    #exitStatus,stdOutput,stdError = RapptureExec(["mpirun", "-n", "1", "bin", "-i", "parameters_rappture.in"])
+    #exitStatus,stdOutput,stdError = RapptureExec(["submit", "--local", "--metrics", dir_path + "../bin/main", "-i", str(path_to_working_dir) + "/parameters_rappture.in"], streamOutput=True)
 
     #fts = open("run_info.txt",'w')
     #fts.write(str(int(num_time_steps))+'\n'+str(num_outputs))
@@ -285,6 +285,14 @@ io = Rappture.library(sys.argv[1])
 # Get input values from Rappture
 #########################################################
 print("Getting inputs from the GUI...")
+
+# get input value for input.group(simulation_optimization).note(toggle_description)
+toggle_description = io.get('input.group(simulation_optimization).note(toggle_description).current')
+
+# get input value for input.group(simulation_optimization).boolean(hi_fi)
+# returns value as string "yes" or "no"
+hi_fi = io.get('input.group(simulation_optimization).boolean(hi_fi).current') == 'yes'
+
 # get input value for input.group(misfit_strains).number(misfit11)
 interfacial_energy_11 = float(io.get('input.group(interfacial_energy).number(interfacial_energy_11).current'))
 interfacial_energy_22 = float(io.get('input.group(interfacial_energy).number(interfacial_energy_22).current'))
@@ -348,8 +356,13 @@ if interfacial_energy_22 < 15:
     subdivisions_Y_string = '2'
 else:
     subdivisions_Y_string = '1'
+    
+if hi_fi:
+	tolerance= '1e-6, double'
+else:
+	tolerance= '1e-3 , double'
 
-create_prismspf_input_file('', path_to_working_dir, ['Subdivisions X', 'Subdivisions Y', 'Model constant sfts_const1', 'Model constant CIJ_Mg', 'Model constant CIJ_Beta', 'Model constant interfacial_energy_11', 'Model constant interfacial_energy_22'], (subdivisions_X_string, subdivisions_Y_string, misfit_string, ec_matrix_string, ec_beta_string,interfacial_energy_string_11, interfacial_energy_string_22))
+create_prismspf_input_file('', path_to_working_dir, ['Subdivisions X', 'Subdivisions Y', 'Model constant sfts_const1', 'Model constant CIJ_Mg', 'Model constant CIJ_Beta', 'Model constant interfacial_energy_11', 'Model constant interfacial_energy_22', 'Model constant equilbrium_tol'], (subdivisions_X_string, subdivisions_Y_string, misfit_string, ec_matrix_string, ec_beta_string,interfacial_energy_string_11, interfacial_energy_string_22, tolerance))
 print("Completed")
 
 Rappture.Utils.progress(5, "Running the phase field simulation...")

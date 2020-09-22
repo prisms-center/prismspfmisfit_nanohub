@@ -161,4 +161,4 @@ set Model constant CIJ_Mg = (31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.
 set Model constant CIJ_Beta = (31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0), anisotropic elastic constants
 
 # Tolerance for determining equilbrium
-set Model constant equilbrium_tol = 1e-6, double
+# set Model constant equilbrium_tol = 1e-6, double
